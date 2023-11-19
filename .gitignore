@@ -1,0 +1,11 @@
+/dist
+/node_modules
+
+# env
+.env
+.env.*
+!.env.example
+!.env.develop
+!.env.production
+
+/tmp
