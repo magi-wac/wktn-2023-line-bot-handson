@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install-all": "npm-run-all -p \"prefix:* -- install\"",
+    "prefix:01": "npm --prefix ./01_parroting-bot"
   },
-  "author": "sumihiro3",
+  "author": "Sumihiro Kagawa",
   "license": "MIT",
   "dependencies": {
     "npm-run-all": "^4.1.5"
