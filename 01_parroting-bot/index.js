@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
  * LINE BOTのWebhookにPOSTリクエストを送ると、この処理が実行される
  */
 app.post('/webhook', line.middleware(config), (req, res) => {
-  console.log(`Webhook events: ${JSON.stringify(req.body.events)}`);
+  console.log(`LINE Webhook を受信しました: ${JSON.stringify(req.body.events)}`);
 
   Promise.all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
@@ -41,6 +41,7 @@ function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null);
   }
+  console.log(`メッセージ [${event.message.text}] をオウム返しします`);
   // ユーザーからのメッセージがテキストの場合、そのままオウム返しする
   const echo = { type: 'text', text: event.message.text };
   return client.replyMessage({
@@ -50,5 +51,5 @@ function handleEvent(event) {
 }
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
+  console.log(`Parroting bot app listening on port ${PORT}`);
 });
