@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "install-all": "npm-run-all -p \"prefix:* -- install\"",
-    "prefix:01": "npm --prefix ./01_parroting-bot"
+    "prefix:01": "npm --prefix ./01_parroting-bot",
+    "prefix:02": "npm --prefix ./02_bot-on-aws"
   },
   "author": "Sumihiro Kagawa",
   "license": "MIT",
