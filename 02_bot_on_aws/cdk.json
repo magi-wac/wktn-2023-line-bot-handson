@@ -1,5 +1,5 @@
 {
-  "app": "node bin/02_bot_on_aws.js",
+  "app": "node bin/line-bot-cdk.js",
   "watch": {
     "include": [
       "**"
