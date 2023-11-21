@@ -1,8 +1,8 @@
 {
-  "name": "02_bot_on_aws",
+  "name": "line-bot-cdk",
   "version": "0.1.0",
   "bin": {
-    "02_bot_on_aws": "bin/02_bot_on_aws.js"
+    "line-bot-cdk": "bin/line-bot-cdk.js"
   },
   "scripts": {
     "build": "echo \"The build step is not required when using JavaScript!\" && exit 0",
