@@ -8,5 +8,11 @@ const stackProps = {
   env: { account: accountNo, region: 'ap-northeast-1' },
 };
 
+// LINE Messaging API のチャネルアクセストークンとチャネルシークレットを入力してください
+const lineBotConfig = {
+  channelSecret: '',
+  channelAccessToken: '',
+};
+
 const app = new cdk.App();
-new LineBotStack(app, 'LineBotStack', stackProps);
+new LineBotStack(app, 'LineBotStack', stackProps, lineBotConfig);

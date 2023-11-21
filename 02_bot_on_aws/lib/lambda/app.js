@@ -1,8 +1,5 @@
-require('dotenv').config();
 const express = require('express');
 const line = require('@line/bot-sdk');
-
-const PORT = process.env.PORT || 3000;
 
 const lineBotConfig = {
   channelSecret: process.env.LINE_CHANNEL_SECRET,
@@ -11,17 +8,18 @@ const lineBotConfig = {
 
 // create Express app
 const app = express();
+const router = express.Router();
 // create LINE SDK client
 const client = new line.messagingApi.MessagingApiClient(lineBotConfig);
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
 /**
  * LINE BOTのWebhookにPOSTリクエストを送ると、この処理が実行される
  */
-app.post('/webhook', line.middleware(lineBotConfig), (req, res) => {
+router.post('/webhook', line.middleware(config), (req, res) => {
   console.log(`LINE Webhook を受信しました: ${JSON.stringify(req.body.events)}`);
 
   Promise.all(req.body.events.map(handleEvent))
@@ -50,6 +48,7 @@ function handleEvent(event) {
   });
 }
 
-app.listen(PORT, () => {
-  console.log(`Parroting bot app listening on port ${PORT}`);
-});
+app.use('/', router);
+
+// Export your express server so you can import it in the lambda function.
+module.exports = app;
