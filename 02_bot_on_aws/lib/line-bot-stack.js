@@ -52,7 +52,8 @@ class LineBotStack extends Stack {
       functionName: 'LineBotFunction',
       description: 'NISSAY IT WACKATHON 2023 Hands on LINE Bot',
       runtime: lambda.Runtime.NODEJS_18_X,
-      entry: 'lambda/line-bot.js',
+      entry: 'src/lambda/line-bot.js',
+      handler: 'handler',
       environment: {
         LINE_CHANNEL_SECRET: lineBotConfig.channelSecret,
         LINE_CHANNEL_ACCESS_TOKEN: lineBotConfig.channelAccessToken,
