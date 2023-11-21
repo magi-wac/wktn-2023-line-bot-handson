@@ -37,9 +37,31 @@ aws configure
 
 プロンプトが表示されたら、AWSアクセスキー、シークレットアクセスキー、デフォルトのリージョンを入力します。
 
-### ブートストラッピング
+```bash
+$ aws configure
+AWS Access Key ID [None]: XXXXXXXXXX
+AWS Secret Access Key [None]: YYYYY1234567890ZZZZZZZ
+Default region name [None]: ap-northeast-1
+Default output format [None]: json
+```
 
-初回のみ実行する必要がある。
+下記コマンドを実行して、設定した値が登録されていればOK。
+
+```bash
+$ cat ~/.aws/config
+[default]
+region = ap-northeast-1
+output = json
+
+$ cat ~/.aws/credentials 
+[default]
+aws_access_key_id = XXXXXXXXXX
+aws_secret_access_key = YYYYY1234567890ZZZZZZZ
+```
+
+### ブートストラッピング（初回のみ）
+
+CDK を利用する際、アカウントで初回のみ実行する必要がある。
 [AWS CDK の開始方法](https://docs.aws.amazon.com/ja_jp/cdk/v2/guide/getting_started.html)
 
 ```bash
@@ -50,3 +72,36 @@ cdk bootstrap aws://{ACCOUNT-NUMBER}/{REGION}
     - 各自のAWSアカウントに付与された番号
 - REGION
     - 今回は東京リージョン ( `ap-northeast-1` )を利用する
+
+```bash
+$ cdk bootstrap aws://123456789012/ap-northeast-1
+ ⏳  Bootstrapping environment aws://123456789012/ap-northeast-1...
+Trusted accounts for deployment: (none)
+Trusted accounts for lookup: (none)
+Using default execution policy of 'arn:aws:iam::aws:policy/AdministratorAccess'. Pass '--cloudformation-execution-policies' to customize.
+CDKToolkit: creating CloudFormation changeset...
+ ✅  Environment aws://123456789012/ap-northeast-1 bootstrapped.
+```
+
+## アプリを作成する
+
+[AWS CDKはじめてのアプリ](https://docs.aws.amazon.com/ja_jp/cdk/v2/guide/hello_world.html)
+
+```bash
+cdk init app --language javascript
+```
+
+---
+
+## Welcome to your CDK JavaScript project
+
+This is a blank project for CDK development with JavaScript.
+
+The `cdk.json` file tells the CDK Toolkit how to execute your app. The build step is not required when using JavaScript.
+
+## Useful commands
+
+* `npm run test`         perform the jest unit tests
+* `npx cdk deploy`       deploy this stack to your default AWS account/region
+* `npx cdk diff`         compare deployed stack with current state
+* `npx cdk synth`        emits the synthesized CloudFormation template
