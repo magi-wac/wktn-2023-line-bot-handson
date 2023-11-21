@@ -2,6 +2,7 @@ const { Stack, Duration, RemovalPolicy, CfnOutput } = require('aws-cdk-lib');
 const s3 = require('aws-cdk-lib/aws-s3');
 const dynamodb = require('aws-cdk-lib/aws-dynamodb');
 const lambda = require('aws-cdk-lib/aws-lambda');
+const nodejsLambda = require('aws-cdk-lib/aws-lambda-nodejs');
 const apiGateway = require('aws-cdk-lib/aws-apigateway');
 
 class LineBotStack extends Stack {
@@ -47,14 +48,14 @@ class LineBotStack extends Stack {
     });
 
     // Lambda 関数の作成
-    const lineBotFunction = new lambda.Function(this, 'LineBotFunction', {
+    const lineBotFunction = new nodejsLambda.NodejsFunction(this, 'LineBotFunction', {
       functionName: 'LineBotFunction',
       description: 'NISSAY IT WACKATHON 2023 Hands on LINE Bot',
       runtime: lambda.Runtime.NODEJS_18_X,
-      handler: 'lambda/line-bot.handler',
+      entry: 'lambda/line-bot.js',
       environment: {
-        LINE_CHANNEL_SECRET: this.lineBotConfig.channelSecret,
-        LINE_CHANNEL_ACCESS_TOKEN: this.lineBotConfig.channelAccessToken,
+        LINE_CHANNEL_SECRET: lineBotConfig.channelSecret,
+        LINE_CHANNEL_ACCESS_TOKEN: lineBotConfig.channelAccessToken,
         LINE_BOT_CONTENTS_BUCKET_NAME: lineBotContentsBucket.bucketName,
         LINE_BOT_MESSAGE_LOGS_TABLE_NAME: lineBotMessageLogsTable.tableName,
       },
