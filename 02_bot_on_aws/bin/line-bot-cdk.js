@@ -3,7 +3,7 @@ const cdk = require('aws-cdk-lib');
 const { LineBotStack } = require('../lib/line-bot-stack');
 
 // ご自身のアカウント番号を入力してください
-const accountNo = '647959552099';
+const accountNo = '788588148195';
 const stackProps = {
   env: { account: accountNo, region: 'ap-northeast-1' },
 };
