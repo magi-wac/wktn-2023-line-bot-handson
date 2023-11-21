@@ -68,19 +68,27 @@ class LineBotStack extends Stack {
     });
 
     // API Gateway の作成
-    const apiGw = new apiGateway.RestApi(this, 'LineBotApiGateway', {
+    const lineBotApiGw = new apiGateway.LambdaRestApi(this, 'LineBotApiGateway', {
+      handler: lineBotFunction,
       deployOptions: {
         tracingEnabled: true,
-        stageName: 'prod',
+        // stageName: 'prod',
       },
       removalPolicy: RemovalPolicy.DESTROY, // スタック削除時に API Gateway も削除
     });
-    apiGw.root.addProxy({
-      defaultIntegration: new apiGateway.LambdaIntegration(lineBotFunction),
-    });
+    // const apiGw = new apiGateway.RestApi(this, 'LineBotApiGateway', {
+    //   deployOptions: {
+    //     tracingEnabled: true,
+    //     stageName: 'prod',
+    //   },
+    //   removalPolicy: RemovalPolicy.DESTROY, // スタック削除時に API Gateway も削除
+    // });
+    // apiGw.root.addProxy({
+    //   defaultIntegration: new apiGateway.LambdaIntegration(lineBotFunction),
+    // });
     new CfnOutput(this, 'LineBotApiGatewayUrl', {
       description: 'ApiGateway LineBotApiGateway URL',
-      value: `${apiGw.url}`,
+      value: `${lineBotApiGw.url}`,
     });
   }
 }
