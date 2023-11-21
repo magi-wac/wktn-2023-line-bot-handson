@@ -54,6 +54,7 @@ class LineBotStack extends Stack {
       runtime: lambda.Runtime.NODEJS_18_X,
       entry: 'src/lambda/line-bot.js',
       handler: 'handler',
+      // 環境変数を設定
       environment: {
         LINE_CHANNEL_SECRET: lineBotConfig.channelSecret,
         LINE_CHANNEL_ACCESS_TOKEN: lineBotConfig.channelAccessToken,
@@ -72,20 +73,9 @@ class LineBotStack extends Stack {
       handler: lineBotFunction,
       deployOptions: {
         tracingEnabled: true,
-        // stageName: 'prod',
       },
       removalPolicy: RemovalPolicy.DESTROY, // スタック削除時に API Gateway も削除
     });
-    // const apiGw = new apiGateway.RestApi(this, 'LineBotApiGateway', {
-    //   deployOptions: {
-    //     tracingEnabled: true,
-    //     stageName: 'prod',
-    //   },
-    //   removalPolicy: RemovalPolicy.DESTROY, // スタック削除時に API Gateway も削除
-    // });
-    // apiGw.root.addProxy({
-    //   defaultIntegration: new apiGateway.LambdaIntegration(lineBotFunction),
-    // });
     new CfnOutput(this, 'LineBotApiGatewayUrl', {
       description: 'ApiGateway LineBotApiGateway URL',
       value: `${lineBotApiGw.url}`,

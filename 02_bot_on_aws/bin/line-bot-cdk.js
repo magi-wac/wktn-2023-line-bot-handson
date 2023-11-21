@@ -3,7 +3,7 @@ const cdk = require('aws-cdk-lib');
 const { LineBotStack } = require('../lib/line-bot-stack');
 
 // ご自身のアカウント番号を入力してください
-const accountNo = '788588148195';
+const accountNo = '';
 const stackProps = {
   env: { account: accountNo, region: 'ap-northeast-1' },
 };
@@ -14,5 +14,9 @@ const lineBotConfig = {
   channelAccessToken: '',
 };
 
+// 環境構築
 const app = new cdk.App();
-new LineBotStack(app, 'LineBotStack', stackProps, lineBotConfig);
+const stack = new LineBotStack(app, 'LineBotStack', stackProps, lineBotConfig);
+
+// タグ付け
+cdk.Tags.of(stack).add('ServiceName', 'NISSAY IT WACKATHON 2023 Hands on');
