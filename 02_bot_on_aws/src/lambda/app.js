@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 /**
  * LINE BOTのWebhookにPOSTリクエストを送ると、この処理が実行される
  */
-router.post('/webhook', line.middleware(config), (req, res) => {
+router.post('/webhook', line.middleware(lineBotConfig), (req, res) => {
   console.log(`LINE Webhook を受信しました: ${JSON.stringify(req.body.events)}`);
 
   Promise.all(req.body.events.map(handleEvent))
