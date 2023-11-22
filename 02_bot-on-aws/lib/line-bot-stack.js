@@ -20,7 +20,7 @@ class LineBotStack extends Stack {
     const lineBotMessageLogsTable = new dynamodb.Table(this, 'LineBotMessageLogsTable', {
       tableName: 'LineBotMessageLogs',
       partitionKey: {
-        name: 'senderId',
+        name: 'lineUserId',
         type: dynamodb.AttributeType.STRING,
       },
       sortKey: {

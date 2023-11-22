@@ -91,13 +91,13 @@ LINE Bot でのメッセージ履歴
 
 | 項目 | Key | Type | 説明 |
 | ---- | ---- | ---- | ---- |
-| senderId | PK | String | メッセージ送信者の LINE USER ID（接頭辞: `LINE_` |
+| lineUserId | PK | String | Bot とやり取りしている LINE ユーザーの ID |
 | sentAt | SK | Number | メッセージ送信日時（UNIX Timestamp ミリ秒単位） |
-| senderType | | String | `LINE` のみ |
+| senderType | | String | `LINE_USER` |
 | messageId | | String | メッセージID |
 | messageType | | String | メッセージ種別 |
-| messageText | | String | メッセージ内容（TextMessage のみ） |
-| messageContents | | String | メッセージ内容の保存先（ImageMessage のみ） |
+| messageText | | String | メッセージ内容（TextMessage の場合のみ） |
+| messageContents | | String | メッセージ内容の保存先（ImageMessage の場合のみ） |
 
 ---
 

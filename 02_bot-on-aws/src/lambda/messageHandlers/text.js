@@ -11,7 +11,8 @@ export const textMessageHandler = async (event) => {
   console.debug(`textMessageHandler called!: ${JSON.stringify(event)}`);
   // メッセージログを保存
   await putTextMessage(event);
-  const replyMessage = { type: 'text', text: event.message.text };
+  const receivedMessage = event.message.text;
+  const replyMessage = { type: 'text', text: receivedMessage };
   return replyMessage;
 };
 
@@ -29,9 +30,9 @@ async function putTextMessage(event) {
   const putCommand = new PutCommand({
     TableName: tableName,
     Item: {
-      senderId: createLineMessageSenderId(event.source.userId),
+      lineUserId: event.source.userId,
       sentAt: event.timestamp,
-      senderType: 'LINE',
+      senderType: 'LINE_USER',
       messageId: event.message.id,
       messageType: event.message.type,
       messageText: event.message.text,
