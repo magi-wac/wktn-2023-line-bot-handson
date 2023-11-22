@@ -68,6 +68,11 @@ class LineBotStack extends Stack {
       value: `${lineBotFunction.functionName} : ${lineBotFunction.functionArn}`,
     });
 
+    // テーブルへのアクセス権限を Lambda 関数に付与
+    lineBotMessageLogsTable.grantReadWriteData(lineBotFunction);
+    // S3 バケットへのアクセス権限を Lambda 関数に付与
+    lineBotContentsBucket.grantReadWrite(lineBotFunction);
+
     // API Gateway の作成
     const lineBotApiGw = new apiGateway.LambdaRestApi(this, 'LineBotApiGateway', {
       handler: lineBotFunction,
