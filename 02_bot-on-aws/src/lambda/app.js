@@ -92,7 +92,7 @@ async function handleEvent(event) {
   let replyMessage;
   try {
     // イベントハンドラーを実行して、返信メッセージを取得する
-    replyMessage = await handler(event);
+    replyMessage = await handler(event, client);
   } catch (error) {
     console.error(`イベントの処理中にエラーが発生しました: ${JSON.stringify(error)}`);
     if (error instanceof Error) {

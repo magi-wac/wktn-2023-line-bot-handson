@@ -13,7 +13,7 @@ const messageHandlers = {
 function getMessageHandler(event) {
   const handler = messageHandlers[event.message.type];
   if (!handler) {
-    console.warn(`未知のメッセージタイプ [${event.message.type}] が発生しました`);
+    console.warn(`メッセージタイプ [${event.message.type}] には対応していません`);
     return undefined;
   }
   return handler;
@@ -24,12 +24,15 @@ function getMessageHandler(event) {
  * @param event Webhook event object
  * @returns 返信メッセージ
  */
-export const messageEventHandler = async (event) => {
+export const messageEventHandler = async (event, lineMessagingApiClient) => {
   console.debug(`messageEventHandler called!`);
   const handler = getMessageHandler(event);
   if (!handler) {
-    // 未知のメッセージタイプの場合、何もしない
-    return Promise.resolve(null);
+    // 未対応のメッセージタイプの場合、その旨のメッセージを返す
+    return {
+      type: 'text',
+      text: `メッセージタイプ [${event.message.type}] には対応していません`,
+    };
   }
   let replyMessage;
   try {
