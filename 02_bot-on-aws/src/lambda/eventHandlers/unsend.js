@@ -5,9 +5,8 @@
  */
 export const unsendEventHandler = async (event) => {
   console.debug(`unsendEventHandler called!: ${JSON.stringify(event)}`);
-  const replyMessage = {
-    type: 'text',
-    text: `送信取消イベントを受信しました\n取り消された messageId: ${event.unsend.messageId}`,
-  };
-  return replyMessage;
+  console.log(
+    `送信取消イベントを受信しました [取り消された messageId: ${event.unsend.messageId}]`,
+  );
+  return null;
 };
