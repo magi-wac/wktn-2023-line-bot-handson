@@ -1,6 +1,8 @@
+import { textMessageHandler } from '../messageHandlers';
+
 // メッセージ種別ごとのハンドラーを定義
 const messageHandlers = {
-  text: undefined,
+  text: textMessageHandler,
 };
 
 /**
@@ -23,7 +25,7 @@ function getMessageHandler(event) {
  * @returns 返信メッセージ
  */
 export const messageEventHandler = async (event) => {
-  console.debug(`messageEventHandler called!: ${JSON.stringify(event)}`);
+  console.debug(`messageEventHandler called!`);
   const handler = getMessageHandler(event);
   if (!handler) {
     // 未知のメッセージタイプの場合、何もしない
