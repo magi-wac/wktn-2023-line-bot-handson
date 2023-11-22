@@ -39,12 +39,12 @@ export const messageEventHandler = async (event, lineMessagingApiClient) => {
     // メッセージハンドラーを実行して、返信メッセージを取得する
     replyMessage = await handler(event);
   } catch (error) {
-    console.error(`メッセージの処理中にエラーが発生しました: ${JSON.stringify(error)}`);
+    console.error(`メッセージ処理中にエラーが発生しました: ${JSON.stringify(error)}`);
     if (error instanceof Error) {
       console.error(error.message);
       console.error(error.stack);
     }
-    replyMessage = { type: 'text', text: 'エラーが発生しました' };
+    replyMessage = { type: 'text', text: 'メッセージ処理中にエラーが発生しました' };
   }
   return replyMessage;
 };
