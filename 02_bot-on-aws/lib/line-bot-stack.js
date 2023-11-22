@@ -52,7 +52,7 @@ class LineBotStack extends Stack {
       functionName: 'LineBotFunction',
       description: 'NISSAY IT WACKATHON 2023 Hands on LINE Bot',
       runtime: lambda.Runtime.NODEJS_18_X,
-      entry: 'src/lambda/line-bot.js',
+      entry: 'src/lambda/server.js',
       handler: 'handler',
       // 環境変数を設定
       environment: {

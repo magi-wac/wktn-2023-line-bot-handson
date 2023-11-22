@@ -26,8 +26,12 @@ app.post('/webhook', line.middleware(lineBotConfig), (req, res) => {
 
   Promise.all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
-    .catch((err) => {
-      console.error(err);
+    .catch((error) => {
+      console.error(`Webhook の処理中にエラーが発生しました: ${JSON.stringify(error)}`);
+      if (error instanceof Error) {
+        console.error(error.message);
+        console.error(error.stack);
+      }
       res.status(500).end();
     });
 });
