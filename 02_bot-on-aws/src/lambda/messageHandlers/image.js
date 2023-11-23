@@ -31,11 +31,14 @@ async function uploadImageToS3(event) {
       throw new Error('Failed to get image URL');
     }
     console.debug(`メッセージの画像を取得します: ${imageUrl}`);
-    const requestConfig = { responseType: 'stream' };
+    let requestConfig = { responseType: 'stream' };
     if (event.message.contentProvider.type === 'line') {
       // LINE の場合、Authorization ヘッダーを付与する
-      requestConfig.headers = {
-        Authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS_TOKEN}`,
+      requestConfig = {
+        responseType: 'stream',
+        headers: {
+          Authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS_TOKEN}`,
+        },
       };
     }
     const imageResponse = await axios.get(imageUrl, requestConfig);
@@ -46,6 +49,7 @@ async function uploadImageToS3(event) {
     const imageFileKey = `${userId}/images/${imageFileName}`;
     const fileStream = imageResponse.data;
     // upload image to S3
+    console.debug(`S3 Bucket へのアップロードを開始: ${imageFileKey}`);
     const upload = new Upload({
       client: s3Client,
       params: {
