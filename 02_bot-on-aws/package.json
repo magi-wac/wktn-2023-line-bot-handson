@@ -5,8 +5,8 @@
     "line-bot-cdk": "bin/line-bot-cdk.js"
   },
   "scripts": {
-    "build": "echo \"The build step is not required when using JavaScript!\" && exit 0",
-    "cdk": "cdk",
+    "cdk:prepare": "cdk ls && cdk synth && cdk diff",
+    "cdk:deploy": "cdk deploy",
     "test": "jest"
   },
   "devDependencies": {
