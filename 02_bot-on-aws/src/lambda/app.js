@@ -102,8 +102,8 @@ async function handleEvent(event) {
     replyMessage = { type: 'text', text: 'エラーが発生しました' };
   }
   console.log(`返信メッセージ: [${JSON.stringify(replyMessage)}]`);
-  if (!replyMessage) {
-    // 返信メッセージがない場合、何もしない
+  if (!replyMessage || !event.replyToken) {
+    // 返信メッセージがない場合、またはreplyToken がない場合は何もしない
     return Promise.resolve(null);
   }
   return client.replyMessage({

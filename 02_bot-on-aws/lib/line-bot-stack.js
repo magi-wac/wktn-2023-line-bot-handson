@@ -38,6 +38,8 @@ class LineBotStack extends Stack {
     // S3 バケットの作成
     const lineBotContentsBucket = new s3.Bucket(this, 'LineBotContentsBucket', {
       versioned: false,
+      // バケット内の画像ファイルなどを公開する
+      publicReadAccess: true,
       // スタックを削除したときに自動的に削除されるようにする
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
