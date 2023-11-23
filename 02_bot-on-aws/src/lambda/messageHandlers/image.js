@@ -30,7 +30,15 @@ async function uploadImageToS3(event) {
     if (!imageUrl) {
       throw new Error('Failed to get image URL');
     }
-    const imageResponse = await axios.get(imageUrl, { responseType: 'stream' });
+    console.debug(`メッセージの画像を取得します: ${imageUrl}`);
+    const requestConfig = { responseType: 'stream' };
+    if (event.message.contentProvider.type === 'line') {
+      // LINE の場合、Authorization ヘッダーを付与する
+      requestConfig.headers = {
+        Authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS_TOKEN}`,
+      };
+    }
+    const imageResponse = await axios.get(imageUrl, requestConfig);
     const contentType = imageResponse.headers.getContentType();
     const fileExtension = getFileExtensionFromContentType(contentType);
     const imageFileName = `${messageId}.${fileExtension}`; // 画像ファイル名
