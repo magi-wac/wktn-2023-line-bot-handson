@@ -60,13 +60,15 @@ async function uploadImageToS3(event) {
     };
     return result;
   } catch (error) {
-    console.error(
-      `S3 Bucket への画像のアップロードが失敗しました: ${JSON.stringify(error)}`,
-    );
+    const errorMessage = `S3 Bucket への画像のアップロードが失敗しました: ${JSON.stringify(
+      error,
+    )}`;
+    console.error(errorMessage);
     if (error instanceof Error) {
       console.error(error.message);
       console.error(error.stack);
     }
+    throw new Error(errorMessage);
   }
 }
 
@@ -85,7 +87,7 @@ function getImageUrl(event) {
       imageUrl = null;
       break;
   }
-  return contentProviderType.originalContentUrl;
+  return imageUrl;
 }
 
 function getFileExtensionFromContentType(contentType) {
