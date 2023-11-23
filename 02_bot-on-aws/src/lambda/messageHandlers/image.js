@@ -1,7 +1,13 @@
-import { S3Client, CompleteMultipartUploadCommandOutput } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
 import axios from 'axios';
+import { PutCommand } from '@aws-sdk/lib-dynamodb';
+import { getDynamoDBDocumentClient, getS3Client } from '../commons';
 
+/**
+ * 画像メッセージを処理する
+ * @param event Webhook event object
+ * @returns メッセージ処理結果
+ */
 export const imageMessageHandler = async (event) => {
   console.debug(`imageMessageHandler called!: ${JSON.stringify(event)}`);
   // upload image
@@ -9,11 +15,34 @@ export const imageMessageHandler = async (event) => {
   console.log(
     `画像メッセージをS3にアップロードしました: ${JSON.stringify(uploadResult)}`,
   );
-  const replyMessage = {
-    type: 'text',
-    text: `画像メッセージを受信しました: ${uploadResult.Location}`,
-  };
-  return replyMessage;
+  const imageUrl = uploadResult.Location;
+  // DB に画像メッセージの情報を保存する
+  await putImageMessageLog(event, uploadResult);
+  // 返信メッセージを作成
+  let replyMessages;
+  if (imageUrl) {
+    console.debug(`画像メッセージのURL: ${imageUrl}`);
+    // 画像メッセージで返信する
+    replyMessages = [
+      {
+        type: 'text',
+        text: `画像メッセージを受信しました。`,
+      },
+      {
+        type: 'image',
+        originalContentUrl: imageUrl,
+        previewImageUrl: imageUrl,
+      },
+    ];
+  } else {
+    replyMessages = [
+      {
+        type: 'text',
+        text: `画像メッセージを受信しましたが、画像ファイルを取得できませんでした。`,
+      },
+    ];
+  }
+  return replyMessages;
 };
 
 /**
@@ -22,7 +51,7 @@ export const imageMessageHandler = async (event) => {
  */
 async function uploadImageToS3(event) {
   try {
-    const s3Client = new S3Client({});
+    const s3Client = getS3Client();
     const userId = event.source.userId;
     const messageId = event.message.id;
     const imageUrl = getImageUrl(event);
@@ -42,12 +71,12 @@ async function uploadImageToS3(event) {
       };
     }
     const imageResponse = await axios.get(imageUrl, requestConfig);
-    const contentType = imageResponse.headers.getContentType();
-    const fileExtension = getFileExtensionFromContentType(contentType);
+    const fileExtension = getFileExtensionFromContentType(
+      imageResponse.headers.getContentType(),
+    );
     const imageFileName = `${messageId}.${fileExtension}`; // 画像ファイル名
     // S3 バケット内の画像ファイルのキー
     const imageFileKey = `${userId}/images/${imageFileName}`;
-    const fileStream = imageResponse.data;
     // upload image to S3
     console.debug(`S3 Bucket へのアップロードを開始: ${imageFileKey}`);
     const upload = new Upload({
@@ -55,14 +84,11 @@ async function uploadImageToS3(event) {
       params: {
         Bucket: process.env.LINE_BOT_CONTENTS_BUCKET_NAME,
         Key: imageFileKey,
-        Body: fileStream,
+        Body: imageResponse.data, // ダウンロードした画像ファイルのストリーム
       },
     });
     console.debug(`S3 Bucket へ画像をアップロード中...`);
     const uploadResponse = await upload.done();
-    if (!(uploadResponse instanceof CompleteMultipartUploadCommandOutput)) {
-      throw new Error('Failed to upload image to S3');
-    }
     console.log(
       `S3 Bucket への画像のアップロードが完了しました: ${JSON.stringify(uploadResponse)}`,
     );
@@ -84,8 +110,14 @@ async function uploadImageToS3(event) {
   }
 }
 
+/**
+ * メッセージ画像のURLを取得する
+ * @param event Webhook event object
+ * @returns メッセージ画像のURL
+ */
 function getImageUrl(event) {
   const contentProviderType = event.message.contentProvider.type;
+  console.debug(`画像の URL を取得します: ${contentProviderType}`);
   let imageUrl;
   switch (contentProviderType) {
     case 'line':
@@ -102,7 +134,13 @@ function getImageUrl(event) {
   return imageUrl;
 }
 
+/**
+ * 画像ファイルの拡張子を取得する
+ * @param contentType Content-Type ヘッダーの値
+ * @returns 画像ファイルの拡張子
+ */
 function getFileExtensionFromContentType(contentType) {
+  console.debug(`Content-Type ヘッダー [${contentType}] を基に拡張子を取得します`);
   switch (contentType) {
     case 'image/jpeg':
       return 'jpg';
@@ -113,4 +151,34 @@ function getFileExtensionFromContentType(contentType) {
     default:
       return 'jpg';
   }
+}
+
+/**
+ * メッセージログを保存する
+ * @param event Webhook event object
+ * @param uploadResult 画像ファイルのアップロード結果
+ * @returns メッセージログの保存結果
+ */
+async function putImageMessageLog(event, uploadResult) {
+  const docClient = getDynamoDBDocumentClient();
+  // メッセージログ用テーブル名を環境変数から取得
+  const tableName = process.env.LINE_BOT_MESSAGE_LOGS_TABLE_NAME;
+  // DB への書き込みを実行するためのコマンドを作成
+  const putCommand = new PutCommand({
+    TableName: tableName,
+    Item: {
+      lineUserId: event.source.userId,
+      sentAt: event.timestamp,
+      senderType: 'LINE_USER',
+      messageId: event.message.id,
+      messageType: event.message.type,
+      imageUrl: uploadResult.Location,
+      imageFileKey: uploadResult.Key,
+    },
+  });
+  // DB への書き込みを実行
+  console.debug(`DB への書き込みを実行します: ${JSON.stringify(putCommand)}`);
+  const response = await docClient.send(putCommand);
+  console.log(`DB への書き込み結果: ${JSON.stringify(response)}`);
+  return response.$metadata.httpStatusCode;
 }

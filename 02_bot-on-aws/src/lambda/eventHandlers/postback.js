@@ -10,5 +10,5 @@ export const postbackEventHandler = async (event) => {
     type: 'text',
     text: `ポストバックデータ [${postbackData}] を受信しました`,
   };
-  return replyMessage;
+  return [replyMessage];
 };

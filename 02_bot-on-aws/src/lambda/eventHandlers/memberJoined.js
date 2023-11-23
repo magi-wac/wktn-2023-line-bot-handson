@@ -9,5 +9,5 @@ export const memberJoinedEventHandler = async (event) => {
     type: 'text',
     text: `グループへの参加ありがとうございます！`,
   };
-  return replyMessage;
+  return [replyMessage];
 };

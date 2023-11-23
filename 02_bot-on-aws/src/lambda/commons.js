@@ -1,13 +1,22 @@
-// /**
-//  * LINE でのメッセージ送信者を表すプレフィックス
-//  */
-// export const LINE_MESSAGE_SENDER_PREFIX = 'LINE_';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { S3Client } from '@aws-sdk/client-s3';
 
-// /**
-//  * LINE USER ID から DB 保存用のメッセージ送信者 ID を作成する
-//  * @param lineUserId LINE USER ID
-//  * @returns DB 保存用のメッセージ送信者 ID
-//  */
-// export const createLineMessageSenderId = (lineUserId) => {
-//   return `${LINE_MESSAGE_SENDER_PREFIX}${lineUserId}`;
-// };
+/**
+ * DynamoDBDocumentClient を取得する
+ * @returns DynamoDBDocumentClient
+ */
+export const getDynamoDBDocumentClient = () => {
+  const client = new DynamoDBClient({});
+  const docClient = DynamoDBDocumentClient.from(client);
+  return docClient;
+};
+
+/**
+ * S3Client を取得する
+ * @returns S3Client
+ */
+export const getS3Client = () => {
+  const client = new S3Client({});
+  return client;
+};

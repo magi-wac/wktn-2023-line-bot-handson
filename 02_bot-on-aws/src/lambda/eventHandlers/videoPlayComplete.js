@@ -10,5 +10,5 @@ export const videoPlayCompleteEventHandler = async (event) => {
     type: 'text',
     text: `動画ID [${trackingId}] の視聴が完了しました`,
   };
-  return replyMessage;
+  return [replyMessage];
 };

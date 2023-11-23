@@ -35,17 +35,17 @@ export const messageEventHandler = async (event, lineMessagingApiClient) => {
       text: `メッセージタイプ [${event.message.type}] には対応していません`,
     };
   }
-  let replyMessage;
+  let replyMessages;
   try {
     // メッセージハンドラーを実行して、返信メッセージを取得する
-    replyMessage = await handler(event);
+    replyMessages = await handler(event);
   } catch (error) {
     console.error(`メッセージ処理中にエラーが発生しました: ${JSON.stringify(error)}`);
     if (error instanceof Error) {
       console.error(error.message);
       console.error(error.stack);
     }
-    replyMessage = { type: 'text', text: 'メッセージ処理中にエラーが発生しました' };
+    replyMessages = { type: 'text', text: 'メッセージ処理中にエラーが発生しました' };
   }
-  return replyMessage;
+  return replyMessages;
 };

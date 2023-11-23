@@ -9,5 +9,5 @@ export const followEventHandler = async (event) => {
     type: 'text',
     text: `友だち追加ありがとうございます！`,
   };
-  return replyMessage;
+  return [replyMessage];
 };

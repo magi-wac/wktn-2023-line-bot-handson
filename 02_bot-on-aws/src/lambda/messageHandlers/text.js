@@ -1,5 +1,5 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { PutCommand } from '@aws-sdk/lib-dynamodb';
+import { getDynamoDBDocumentClient } from '../commons';
 
 /**
  * テキストメッセージを処理する
@@ -9,10 +9,10 @@ import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 export const textMessageHandler = async (event) => {
   console.debug(`textMessageHandler called!: ${JSON.stringify(event)}`);
   // メッセージログを保存
-  await putTextMessage(event);
+  await putTextMessageLog(event);
   const receivedMessage = event.message.text;
   const replyMessage = { type: 'text', text: receivedMessage };
-  return replyMessage;
+  return [replyMessage];
 };
 
 /**
@@ -20,12 +20,11 @@ export const textMessageHandler = async (event) => {
  * @param event Webhook event object
  * @returns メッセージログの保存結果
  */
-async function putTextMessage(event) {
+async function putTextMessageLog(event) {
+  const docClient = getDynamoDBDocumentClient();
   // メッセージログ用テーブル名を環境変数から取得
   const tableName = process.env.LINE_BOT_MESSAGE_LOGS_TABLE_NAME;
   // @see https://docs.aws.amazon.com/ja_jp/sdk-for-javascript/v3/developer-guide/javascript_dynamodb_code_examples.html
-  const client = new DynamoDBClient({});
-  const docClient = DynamoDBDocumentClient.from(client);
   // DB への書き込みを実行するためのコマンドを作成
   // @see https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/dynamodb/command/PutItemCommand/
   const putCommand = new PutCommand({

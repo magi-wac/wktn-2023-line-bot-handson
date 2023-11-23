@@ -89,26 +89,26 @@ async function handleEvent(event) {
     // 未知のイベントタイプの場合、何もしない
     return Promise.resolve(null);
   }
-  let replyMessage;
+  let replyMessages;
   try {
     // イベントハンドラーを実行して、返信メッセージを取得する
-    replyMessage = await handler(event, client);
+    replyMessages = await handler(event, client);
   } catch (error) {
     console.error(`イベントの処理中にエラーが発生しました: ${JSON.stringify(error)}`);
     if (error instanceof Error) {
       console.error(error.message);
       console.error(error.stack);
     }
-    replyMessage = { type: 'text', text: 'エラーが発生しました' };
+    replyMessages = { type: 'text', text: 'エラーが発生しました' };
   }
-  console.log(`返信メッセージ: [${JSON.stringify(replyMessage)}]`);
-  if (!replyMessage || !event.replyToken) {
+  console.log(`返信メッセージ: [${JSON.stringify(replyMessages)}]`);
+  if (!replyMessages || !event.replyToken) {
     // 返信メッセージがない場合、またはreplyToken がない場合は何もしない
     return Promise.resolve(null);
   }
   return client.replyMessage({
     replyToken: event.replyToken,
-    messages: [replyMessage],
+    messages: replyMessages,
   });
 }
 

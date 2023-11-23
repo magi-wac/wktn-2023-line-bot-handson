@@ -96,8 +96,9 @@ LINE Bot でのメッセージ履歴
 | senderType | | String | `LINE_USER` |
 | messageId | | String | メッセージID |
 | messageType | | String | メッセージ種別 |
-| messageText | | String | メッセージ内容（TextMessage の場合のみ） |
-| messageContents | | String | メッセージ内容の保存先（ImageMessage の場合のみ） |
+| messageText | | String | メッセージ内容（テキストメッセージ の場合のみ） |
+| imageUrl | | String | 画像メッセージ内の画像ファイル URL（画像メッセージ の場合のみ） |
+| imageFileKey | String | 画像ファイルを格納した S3 バケット内のキー（テキストメッセージ の場合のみ） |
 
 ---
 
