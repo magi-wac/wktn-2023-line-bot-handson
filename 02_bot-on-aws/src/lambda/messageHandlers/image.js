@@ -58,7 +58,7 @@ async function uploadImageToS3(event) {
         Body: fileStream,
       },
     });
-    console.debug(`S3 Bucket へ画像をアップロード中... : ${JSON.stringify(upload)}`);
+    console.debug(`S3 Bucket へ画像をアップロード中...`);
     const uploadResponse = await upload.done();
     if (!(uploadResponse instanceof CompleteMultipartUploadCommandOutput)) {
       throw new Error('Failed to upload image to S3');
