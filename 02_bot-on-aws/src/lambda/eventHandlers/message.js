@@ -1,8 +1,9 @@
-import { textMessageHandler } from '../messageHandlers';
+import { textMessageHandler, imageMessageHandler } from '../messageHandlers';
 
 // メッセージ種別ごとのハンドラーを定義
 const messageHandlers = {
   text: textMessageHandler,
+  image: imageMessageHandler,
 };
 
 /**
