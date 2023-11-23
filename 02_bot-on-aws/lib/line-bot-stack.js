@@ -40,6 +40,7 @@ class LineBotStack extends Stack {
       versioned: false,
       // バケット内の画像ファイルなどを公開する
       publicReadAccess: true,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
       // スタックを削除したときに自動的に削除されるようにする
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
