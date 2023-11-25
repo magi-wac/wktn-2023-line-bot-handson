@@ -1,6 +1,7 @@
 {
   "name": "line-bot-cdk",
   "version": "0.1.0",
+  "license": "MIT",
   "bin": {
     "line-bot-cdk": "bin/line-bot-cdk.js"
   },

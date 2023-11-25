@@ -1,7 +1,7 @@
 {
   "name": "wktn-2023-line-bot-handson",
   "version": "1.0.0",
-  "description": "",
+  "description": "Wackathon 2023 LINE Bot Hands-on",
   "main": "index.js",
   "scripts": {
     "install-all": "npm-run-all -p \"prefix:* -- install\"",
