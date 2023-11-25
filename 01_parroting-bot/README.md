@@ -1,12 +1,6 @@
 # オウム返し Bot
 
-## 1. GitHub codespaces を起動
-
-[リポジトリ](https://github.com/sumihiro3/wktn-2023-line-bot-handson)
-
-Code -> codespaces -> Create codespace on main
-
-## 2. LINE Developers で Messaging API Channel を作成
+## 1. LINE Developers で Messaging API Channel を作成
 
 [LINE Developers](https://developers.line.biz/console/)
 
