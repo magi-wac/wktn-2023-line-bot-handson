@@ -1,20 +1,20 @@
 # Bot を AWS で稼働させる
 
-## 利用する AWS サービス
+## 今回のハンズオンで利用する主な AWS サービス
 
 | サービス | 概要 | 本 Bot で利用する内容 |
 | ---- | ---- | ---- |
 | AWS Lambda | Runtime | Bot アプリケーションの実行環境 (Node.js v18) |
-| DynamoDB | NoSQL Database | Bot での会話記録の保存 |
-| S3 | オブジェクトストレージ | Bot へ送信した画像ファイルなどを格納先 |
+| Amazon DynamoDB | NoSQL Database | Bot での会話記録の保存 |
+| Amazon Simple Storage Service (S3) | オブジェクトストレージ | Bot へ送信した画像ファイルなどを格納先 |
 
 ## AWS へのデプロイ方法
 
-### AWS CDK (xxx)
+### AWS Cloud Development Kit (AWS CDK)
 
-AWS 謹製の IaC ツール
-プログラムのコードで AWS のサービス構成（インフラ）の定義を記載でき、AWS 環境へデプロイできる。
-今回は JavaScript を使用して構成を定義する。
+AWS 謹製の Infrastructure as Code（IaC）ツール
+プログラムのコードで AWS のサービス構成（インフラ）の定義を記載でき、AWS 環境へデプロイできるツールです。
+今回は JavaScript を使用して構成を定義します。
 
 ## CDK 実行用グループ・ユーザーを作る
 
