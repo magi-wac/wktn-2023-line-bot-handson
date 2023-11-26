@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 const cdk = require('aws-cdk-lib');
 const { LineBotStack } = require('../lib/line-bot-stack');
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+require('dotenv').config();
 
 // .env に定義した AWS アカウント番号を設定
 const awsAccountNo = process.env.AWS_ACCOUNT_NO;
