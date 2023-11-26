@@ -18,7 +18,6 @@ class LineBotStack extends Stack {
 
     // DynamoDb テーブルの作成
     const lineBotMessageLogsTable = new dynamodb.Table(this, 'LineBotMessageLogsTable', {
-      tableName: 'LineBotMessageLogs',
       partitionKey: {
         name: 'lineUserId',
         type: dynamodb.AttributeType.STRING,
@@ -52,7 +51,6 @@ class LineBotStack extends Stack {
 
     // Lambda 関数の作成
     const lineBotFunction = new nodejsLambda.NodejsFunction(this, 'LineBotFunction', {
-      functionName: 'LineBotFunction',
       description: 'NISSAY IT WACKATHON 2023 Hands on LINE Bot',
       runtime: lambda.Runtime.NODEJS_18_X,
       entry: 'src/lambda/server.js',
