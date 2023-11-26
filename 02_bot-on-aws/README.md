@@ -6,7 +6,7 @@
 | ---- | ---- | ---- |
 | AWS Lambda | Runtime | Bot アプリケーションの実行環境 (Node.js v18) |
 | Amazon DynamoDB | NoSQL Database | Bot での会話記録の保存 |
-| Amazon Simple Storage Service (S3) | オブジェクトストレージ | Bot へ送信した画像ファイルなどを格納先 |
+| Amazon Simple Storage Service (S3) | オブジェクトストレージ | Bot へ送信した画像ファイルなどの格納先 |
 
 ## 2. AWS へのデプロイ
 
