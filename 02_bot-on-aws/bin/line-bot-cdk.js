@@ -1,22 +1,27 @@
 #!/usr/bin/env node
 const cdk = require('aws-cdk-lib');
 const { LineBotStack } = require('../lib/line-bot-stack');
+import * as dotenv from 'dotenv';
 
-// ご自身のアカウント番号を入力してください
-const accountNo = '';
+dotenv.config();
+
+// .env に定義した AWS アカウント番号を設定
+const awsAccountNo = process.env.AWS_ACCOUNT_NO;
 const stackProps = {
-  env: { account: accountNo, region: 'ap-northeast-1' },
+  env: { account: awsAccountNo, region: 'ap-northeast-1' },
 };
+console.log(`stackProps: ${JSON.stringify(stackProps)}`);
 
-// LINE Messaging API のチャネルアクセストークンとチャネルシークレットを入力してください
+// .env に定義した LINE Messaging API のチャネルアクセストークンとチャネルシークレットを設定
 const lineBotConfig = {
-  channelSecret: '',
-  channelAccessToken: '',
+  channelSecret: process.env.LINE_CHANNEL_SECRET,
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
 };
+console.log(`lineBotConfig: ${JSON.stringify(lineBotConfig)}`);
 
 // 環境構築
 const app = new cdk.App();
-const stack = new LineBotStack(app, 'LineBotStack', stackProps, lineBotConfig);
+const stack = new LineBotStack(app, 'LineBotHandsOnStack', stackProps, lineBotConfig);
 
 // タグ付け
 cdk.Tags.of(stack).add('ServiceName', 'NISSAY IT WACKATHON 2023 Hands on');
