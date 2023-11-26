@@ -74,3 +74,7 @@ VS Code で利用する拡張機能や環境構築のスクリプトなどを設
 ## オウム返しBot
 
 [オウム返しBotのハンズオンへ](./01_parroting-bot/README.md)
+
+## Bot を AWS で稼働させる
+
+[`Bot を AWS で稼働させる` のハンズオンへ](./02_bot-on-aws/README.md)
