@@ -24,7 +24,23 @@
 
 ## 3. 開発環境準備
 
-### 1. Codespace の起動
+### 1. リポジトリの最新化
+
+事前準備を案内してから、リポジトリに更新が入っているので、Fork したリポジトリを最新化します。
+
+Web ブラウザーで、事前準備で自分のアカウントにフォークしたリポジトリを開きます。
+
+リポジトリページの `Sync fork` メニュを開き、`Update branch` を選択する。
+
+![Sync fork](docs/images/3_開発環境準備/1_SyncFork.png)
+
+最新化が完了すれば `This branch is not behind the upstream sumihiro3:main` と表示される。
+
+![Sync fork](docs/images/3_開発環境準備/1_NotBehindTheUpstream.png)
+
+なお、 `Update branch` が表示されていない場合は最新の状態ですので、最新化は不要です。
+
+### 2. Codespace の起動
 
 事前準備でフォークしたリポジトリで Codespace を起動します。
 
@@ -34,13 +50,13 @@
 
 GitHub にログインした状態で、`Code` メニューで `Codespaces` タブを開き、`Create codespace on main` を選択する。
 
-![Launch codespaces](docs/images/3_開発環境準備/1_LaunchCodespaces.png)
+![Launch codespaces](docs/images/3_開発環境準備/2_LaunchCodespaces.png)
 
-### 2. Codespace のビルド
+### 3. Codespace のビルド
 
 起動が開始されると Codespace の設定が実行されます。
 
-![Setting codespace](docs/images/3_開発環境準備/2_SettingCodespaces.png)
+![Setting codespace](docs/images/3_開発環境準備/3_SettingCodespaces.png)
 
 Codespace に設定する内容は [設定ファイル](.devcontainer/devcontainer.json) と [Dockerfile](.devcontainer/Dockerfile) に記載しています。
 VS Code で利用する拡張機能や環境構築のスクリプトなどを設定できるので、興味がある方はご覧ください。
