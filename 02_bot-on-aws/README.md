@@ -8,6 +8,10 @@
 | Amazon DynamoDB | NoSQL Database | Bot での会話記録の保存 |
 | Amazon Simple Storage Service (S3) | オブジェクトストレージ | Bot へ送信した画像ファイルなどの格納先 |
 
+### 1-1. システム構成図
+
+![システム構成図](..docs/images/../../../docs/images/LINE_API_HandsOn_System_Configuration_Diagram.drawio.png)
+
 ## 2. AWS へのデプロイ
 
 ### 2-1. AWS Cloud Development Kit (AWS CDK)
@@ -197,13 +201,71 @@ Bot のトーク画面からテキストメッセージや画像メッセージ�
 
 ![Operation check](../docs/images/02_bot-on-aws/2-4-3_S3.png)
 
-## 3. 参考情報
+## 3. コード解説
+
+### 署名を検証する
+
+リクエストがLINEプラットフォームから送られたことを確認します。
+
+[app.js](../02_bot-on-aws/src/lambda/app.js)
+
+#### 公式ドキュメント
+
+- [署名を検証する](https://developers.line.biz/ja/docs/messaging-api/receiving-messages/#verifying-signatures)
+
+### Webhook イベントの受信
+
+Webhookイベントオブジェクトに含まれるデータに基づいて、ボットの動作を制御したり、ユーザーの要求に答えたりできます。
+
+「1対1のトーク」、「グループトークや複数人トーク」で受信できるイベントが少し異なります。
+
+- [app.js](../02_bot-on-aws/src/lambda/app.js)
+- eventHandlers 以下のコード
+
+#### 公式ドキュメント
+
+- [Webhookイベントのタイプ](https://developers.line.biz/ja/docs/messaging-api/receiving-messages/#webhook-event-types)
+- [Webhookイベントオブジェクト](https://developers.line.biz/ja/reference/messaging-api/#webhook-event-objects)
+
+### メッセージの種類
+
+LINE API で受信、送信できるメッセージにはいくつかの種類があります。
+
+#### 受信メッセージ
+
+- [メッセージイベント](https://developers.line.biz/ja/reference/messaging-api/#message-event)
+
+#### 送信メッセージ
+
+メッセージには **応答メッセージ** と、**プッシュメッセージ** があります。
+
+##### 応答メッセージ
+
+ユーザー、グループトーク、または複数人トークからのイベントに対して、応答メッセージを送信するAPIです。応答メッセージを送るには、Webhookイベントオブジェクトに含まれる応答トークンが必要です。
+
+- [応答メッセージを送る](https://developers.line.biz/ja/reference/messaging-api/#send-reply-message)
+
+##### プッシュメッセージ
+
+ユーザー、グループトーク、または複数人トークに、任意のタイミングでメッセージを送信するAPIです。
+
+なお、フリープランの場合は Push APIが月200通までに制限されます。
+
+- [プッシュメッセージを送る](https://developers.line.biz/ja/reference/messaging-api/#send-push-message)
+
+##### 送信できるメッセージの種類
+
+- [メッセージタイプ](https://developers.line.biz/ja/docs/messaging-api/message-types/#page-title)
+- [メッセージ共通プロパティ](https://developers.line.biz/ja/reference/messaging-api/#message-common-properties)
+
+## 4. 参考情報
 
 ### テーブル構造
 
 #### LineBotMessageLogs
 
-LINE Bot でのメッセージ履歴
+LINE Bot でのメッセージ履歴を格納しています。
+ユーザー単位で送信日時を範囲指定してメッセージ履歴を取得できますので、このプログラムを拡張して生成 API にメッセージ履歴を与えて過去の経緯を含めたやりとりを行うことも可能です。
 
 | 項目 | Key | Type | 説明 |
 | ---- | ---- | ---- | ---- |
@@ -216,9 +278,9 @@ LINE Bot でのメッセージ履歴
 | imageUrl | | String | 画像メッセージ内の画像ファイル URL（画像メッセージ の場合のみ） |
 | imageFileKey | | String | 画像ファイルを格納した S3 バケット内のキー（画像メッセージ の場合のみ） |
 
-## 4. 後始末
+## 5. 後始末
 
-### 4-1. AWS にデプロイした環境の削除
+### 5-1. AWS にデプロイした環境の削除
 
 AWS デプロイした環境が不要になれば、下記のコマンドを実行して削除してください。
 
@@ -240,10 +302,10 @@ LineBotHandsOnStack-Kagawa: destroying... [1/1]
  ✅  LineBotHandsOnStack-Kagawa: destroyed
  ```
 
-### 4-2. codespace の停止
+### 5-2. codespace の停止
 
 Fork したリポジトリのページで、`Stop codespace` を選択すると、codespace が停止します。
 
-![Stop codespace](../docs/images/02_bot-on-aws/4-2_StopCodeSpace.png)
+![Stop codespace](../docs/images/02_bot-on-aws/5-2_StopCodeSpace.png)
 
-![Stop codespace](../docs/images/02_bot-on-aws/4-2_CodeSpaceStopped.png)
+![Stop codespace](../docs/images/02_bot-on-aws/5-2_CodeSpaceStopped.png)
