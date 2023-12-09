@@ -19,7 +19,7 @@ console.log(`lineBotConfig: ${JSON.stringify(lineBotConfig)}`);
 
 // 環境構築
 const app = new cdk.App();
-const stack = new LineBotStack(app, 'LineBotHandsOnStack', stackProps, lineBotConfig);
+const stack = new LineBotStack(app, 'LineBotHandsOnStack-magi', stackProps, lineBotConfig);
 
 // タグ付け
 cdk.Tags.of(stack).add('ServiceName', 'NISSAY IT WACKATHON 2023 Hands on');
